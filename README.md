@@ -37,3 +37,10 @@ The trade-off: baggage properties (the `;key=value` suffixes on each entry) are 
 - `extractBaggage(headers)` → `Record<string, string>` — parsed baggage map, empty object if absent.
 - `extractTraceContext(headers)` → `{ traceparent: string | null, tracestate: string | null }`
 - `extractAll(headers)` → `{ baggage: Record<string, string>, traceparent: string | null, tracestate: string | null }`
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
